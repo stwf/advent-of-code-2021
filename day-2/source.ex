@@ -1,12 +1,22 @@
 defmodule DayTwo do
-  def run(starter) do
+  def part_a, do: run({0, 0})
+  def part_b, do: run({0, 0, 0})
+
+  defp run(starter) do
     initial_data()
     |> massage()
     |> Enum.reduce(starter, &handle_command(&1, &2))
     |> calculate_totals()
   end
 
-  defp calculate_totals(answer), do: elem(answer, 0) * elem(answer, 1)
+  defp initial_data(), do: File.read!("day-2/data.txt")
+
+  defp massage(data) do
+    data
+    |> String.split()
+    |> Enum.chunk_every(2)
+    |> Enum.map(fn [d, v] -> {String.to_existing_atom(d), String.to_integer(v)} end)
+  end
 
   defp handle_command({:down, amount}, {depth, length}), do: {depth + amount, length}
 
@@ -21,15 +31,8 @@ defmodule DayTwo do
   defp handle_command({:forward, amount}, {depth, length, aim}),
     do: {depth + amount * aim, length + amount, aim}
 
-  defp initial_data(), do: File.read!("day-2/data.txt")
-
-  defp massage(data) do
-    data
-    |> String.split()
-    |> Enum.chunk_every(2)
-    |> Enum.map(fn [d, v] -> {String.to_existing_atom(d), String.to_integer(v)} end)
-  end
+  defp calculate_totals(answer), do: elem(answer, 0) * elem(answer, 1)
 end
 
-DayTwo.run({0, 0}) |> IO.inspect()
-DayTwo.run({0, 0, 0}) |> IO.inspect()
+DayTwo.part_a() |> IO.inspect()
+DayTwo.part_b() |> IO.inspect()
