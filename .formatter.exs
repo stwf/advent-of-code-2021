@@ -1,4 +1,3 @@
 [
-  inputs: ["day-2/*.ex"],
-  subdirectories: ["*"]
+  inputs: ["day-2/*.ex"]
 ]
